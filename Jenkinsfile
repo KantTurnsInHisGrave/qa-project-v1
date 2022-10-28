@@ -11,7 +11,7 @@ node {
                     def imageName = "myapp"
                     env.imageName = "${imageName}"
                     def oldImageID = sh( 
-                                            script: 'sudo docker images -qf reference=\${imageName}:\${imageTag}',
+                                            script: 'docker images -qf reference=\${imageName}:\${imageTag}',
                                             returnStdout: true
                                         )
 
@@ -20,12 +20,13 @@ node {
 
                     if ( "${oldImageID}" != '' ) {
                         echo "Deleting image id: ${oldImageID}..."
-                         sh "docker rmi -f ${oldImageID}"
+                         sh "docker rmi -fr ${oldImageID}"
                     } else {
                         echo "No image to delete..."
                         } 
                     }  
                 }
+              }
     
     stage('Setup docker') {
 
@@ -41,4 +42,3 @@ node {
         
         sh "bash run.sh"
     }
-}
